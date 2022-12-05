@@ -34,6 +34,7 @@
 	
 	<properties>
 		<openMRSVersion>2.0.5</openMRSVersion>
+		<everestVersion>1.1.0</everestVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<springVersion>4.1.4.RELEASE</springVersion>
         <contenthandlerVersion>3.0.1-SNAPSHOT</contenthandlerVersion>
@@ -144,6 +145,23 @@
             <name>DCM4CHE Repository</name>
             <url>http://www.dcm4che.org/maven2</url>
         </repository>
+        <repository>
+			<id>marc-te-main</id>
+			<url>http://te.marc-hi.ca/mvn</url>
+		</repository>
+		<repository>
+			<id>central</id>
+			<name>Maven Repository Switchboard</name>
+			<layout>default</layout>
+			<url>https://repo1.maven.org/maven2</url>
+		</repository>
+		
+		<repository>
+			<id>santesuite-main</id>
+			<url>http://santesuite.org/mvn</url>
+			<name>SanteSuite</name>
+		</repository>
+	
 	</repositories>
 
 	<pluginRepositories>
