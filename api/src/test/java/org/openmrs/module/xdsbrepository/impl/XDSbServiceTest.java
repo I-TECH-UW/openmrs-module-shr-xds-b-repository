@@ -657,7 +657,7 @@ public class XDSbServiceTest extends BaseModuleContextSensitiveTest {
         String uniqueId = service.storeDocument(eo, request);
 
         assertEquals("2009.9.1.2455", uniqueId);
-        verify(mockHandler).saveContent(eq(ps.getPatient(2)), (Map<EncounterRole, Set<Provider>>) any(), eq(es.getEncounterType(1)), eq(expectedContent),null);
+        verify(mockHandler).saveContent(eq(ps.getPatient(2)), (Map<EncounterRole, Set<Provider>>) any(), eq(es.getEncounterType(1)), eq(expectedContent));
     }
 
     public void testValidateSuccess(String testDocument) throws Exception {

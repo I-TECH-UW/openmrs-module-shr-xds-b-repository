@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.solr.common.util.DateUtil;
+//import org.apache.solr.common.util.DateUtil;
 import org.dcm4che3.audit.AuditMessages.EventTypeCode;
 import org.dcm4che3.net.audit.AuditLogger;
 import org.dcm4chee.xds2.common.XDSConstants;
