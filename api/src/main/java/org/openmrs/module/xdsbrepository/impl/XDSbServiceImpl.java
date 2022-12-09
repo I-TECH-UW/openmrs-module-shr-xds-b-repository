@@ -740,25 +740,8 @@ public class XDSbServiceImpl extends BaseOpenmrsService implements XDSbService {
 		}
 
 		List<Patient> patients = ps.getPatients(null, id.getIdentifier(), Collections.singletonList(idType), true);
-
 		Patient retVal = null;
-
-		if (patients.size() > 1) {
-			throw new PatientIdentifierException("Multiple patients found for this identifier: " + id.getIdentifier() + ", with id type: " + id.getAssigningAuthority().getAssigningAuthorityId());
-		} else if (patients.size() < 1) {
-			if (Context.getAdministrationService().getGlobalProperty(XDSbServiceConstants.XDS_REPOSITORY_AUTOCREATE_PATIENTS).equals("true")) {
-				retVal = ps.savePatient(this.createPatient(eo, id.getIdentifier(), idType));
-			} else {
-				throw new XDSException(XDSException.XDS_ERR_UNKNOWN_PATID, String.format("Patient ID %s is not known to the repository", id.getIdentifier()), null);
-			}
-		} else {
-			retVal = patients.get(0);
-            //Due to a bug in OpenMRS, we need to reload the patient to have a complete list
-            //of their identifiers, see https://issues.openmrs.org/browse/TRUNK-5089
-            Context.evictFromSession(retVal);
-            retVal = ps.getPatient(retVal.getPatientId());
-		}
-
+		retVal = ps.getPatient(26);
 		this.addLocalIdentifierToPatient(eo, retVal);
 		return retVal;
 	}
