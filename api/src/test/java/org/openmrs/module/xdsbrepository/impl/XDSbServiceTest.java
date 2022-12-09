@@ -777,7 +777,7 @@ public class XDSbServiceTest extends BaseModuleContextSensitiveTest {
     public class TestContentHandler1 implements ContentHandler {
 
         @Override
-        public Encounter saveContent(Patient patient, Map<EncounterRole, Set<Provider>> encounterRoleSetMap, EncounterType encounterType, Content content, Encounter encounter) {
+        public Encounter saveContent(Patient patient, Map<EncounterRole, Set<Provider>> encounterRoleSetMap, EncounterType encounterType, Content content) {
             return null;
         }
 
@@ -795,7 +795,7 @@ public class XDSbServiceTest extends BaseModuleContextSensitiveTest {
     public class TestContentHandler2 implements ContentHandler {
 
         @Override
-        public Encounter saveContent(Patient patient, Map<EncounterRole, Set<Provider>> encounterRoleSetMap, EncounterType encounterType, Content content, Encounter encounter) {
+        public Encounter saveContent(Patient patient, Map<EncounterRole, Set<Provider>> encounterRoleSetMap, EncounterType encounterType, Content content) {
             return null;
         }
 

@@ -412,7 +412,7 @@ public class XDSbServiceImpl extends BaseOpenmrsService implements XDSbService {
 		Encounter encounter = createEncounter(eot);
 
 		// always send to the default unstructured data handler
-		defaultHandler.saveContent(patient, providersByRole, encounterType, content, encounter);
+		defaultHandler.saveContent(patient, providersByRole, encounterType, content);
 		// If another handler exists send to that as well, do this async if config is set
 		if (discreteHandler != null) {
 			if (Context.getAdministrationService().getGlobalProperty(XDSbServiceConstants.XDS_REPOSITORY_DISCRETE_HANDLER_ASYNC, "false").equalsIgnoreCase("true")) {
@@ -426,7 +426,7 @@ public class XDSbServiceImpl extends BaseOpenmrsService implements XDSbService {
 				XDSbService xdsService = Context.getService(XDSbService.class);
 				xdsService.queueDiscreteDataProcessing(qi);
 			} else {
-				discreteHandler.saveContent(patient, providersByRole, encounterType, content, encounter);
+				discreteHandler.saveContent(patient, providersByRole, encounterType, content);
 			}
 		}
 
