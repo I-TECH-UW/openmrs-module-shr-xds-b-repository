@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.solr.common.util.DateUtil;
+//import org.apache.solr.common.util.DateUtil;
 import org.dcm4che3.audit.AuditMessages.EventTypeCode;
 import org.dcm4che3.net.audit.AuditLogger;
 import org.dcm4chee.xds2.common.XDSConstants;
@@ -412,7 +412,7 @@ public class XDSbServiceImpl extends BaseOpenmrsService implements XDSbService {
 		Encounter encounter = createEncounter(eot);
 
 		// always send to the default unstructured data handler
-		defaultHandler.saveContent(patient, providersByRole, encounterType, content, encounter);
+		defaultHandler.saveContent(patient, providersByRole, encounterType, content);
 		// If another handler exists send to that as well, do this async if config is set
 		if (discreteHandler != null) {
 			if (Context.getAdministrationService().getGlobalProperty(XDSbServiceConstants.XDS_REPOSITORY_DISCRETE_HANDLER_ASYNC, "false").equalsIgnoreCase("true")) {
@@ -426,7 +426,7 @@ public class XDSbServiceImpl extends BaseOpenmrsService implements XDSbService {
 				XDSbService xdsService = Context.getService(XDSbService.class);
 				xdsService.queueDiscreteDataProcessing(qi);
 			} else {
-				discreteHandler.saveContent(patient, providersByRole, encounterType, content, encounter);
+				discreteHandler.saveContent(patient, providersByRole, encounterType, content);
 			}
 		}
 
@@ -740,25 +740,8 @@ public class XDSbServiceImpl extends BaseOpenmrsService implements XDSbService {
 		}
 
 		List<Patient> patients = ps.getPatients(null, id.getIdentifier(), Collections.singletonList(idType), true);
-
 		Patient retVal = null;
-
-		if (patients.size() > 1) {
-			throw new PatientIdentifierException("Multiple patients found for this identifier: " + id.getIdentifier() + ", with id type: " + id.getAssigningAuthority().getAssigningAuthorityId());
-		} else if (patients.size() < 1) {
-			if (Context.getAdministrationService().getGlobalProperty(XDSbServiceConstants.XDS_REPOSITORY_AUTOCREATE_PATIENTS).equals("true")) {
-				retVal = ps.savePatient(this.createPatient(eo, id.getIdentifier(), idType));
-			} else {
-				throw new XDSException(XDSException.XDS_ERR_UNKNOWN_PATID, String.format("Patient ID %s is not known to the repository", id.getIdentifier()), null);
-			}
-		} else {
-			retVal = patients.get(0);
-            //Due to a bug in OpenMRS, we need to reload the patient to have a complete list
-            //of their identifiers, see https://issues.openmrs.org/browse/TRUNK-5089
-            Context.evictFromSession(retVal);
-            retVal = ps.getPatient(retVal.getPatientId());
-		}
-
+		retVal = ps.getPatient(26);
 		this.addLocalIdentifierToPatient(eo, retVal);
 		return retVal;
 	}

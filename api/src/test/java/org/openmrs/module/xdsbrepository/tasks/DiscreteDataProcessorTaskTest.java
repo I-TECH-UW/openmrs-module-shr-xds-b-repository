@@ -84,7 +84,7 @@ public class DiscreteDataProcessorTaskTest extends BaseModuleContextSensitiveTes
         processor.processQueueItem(qi);
 
         // verify discrete handler was called
-        verify(mockHandler).saveContent(eq(ps.getPatient(2)), (Map<EncounterRole, Set<Provider>>) any(), eq(es.getEncounterType(1)), eq(expectedContent), null);
+        verify(mockHandler).saveContent(eq(ps.getPatient(2)), (Map<EncounterRole, Set<Provider>>) any(), eq(es.getEncounterType(1)), eq(expectedContent));
 
         // restore mock
         chs.setDefaultUnstructuredHandler(oldHandler);
