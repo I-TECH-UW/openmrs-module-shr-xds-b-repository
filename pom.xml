@@ -145,7 +145,7 @@
             <name>DCM4CHE Repository</name>
             <url>http://www.dcm4che.org/maven2</url>
         </repository>
-         <repository>
+		<repository>
 			<id>marc-te-main</id>
 			<url>http://te.marc-hi.ca/mvn</url>
 		</repository>
