@@ -970,12 +970,11 @@ public class XDSbServiceImpl extends BaseOpenmrsService implements XDSbService {
 		}
 
 		List<Patient> patients = ps.getPatients(null, id.getIdentifier(), Collections.singletonList(idType), true);
+		if (patients.size() > 1) {
+			log.warn("Multiple patients found for this identifier: " + id.getIdentifier() + ", with id type: "
+			        + id.getAssigningAuthority().getAssigningAuthorityId());
+		}
 		
-		/*if (patients.size() > 1) {
-			throw new PatientIdentifierException("Multiple patients found for this identifier: " + id.getIdentifier()
-			        + ", with id type: " + id.getAssigningAuthority().getAssigningAuthorityId());
-		}*/
-
 		// try to search and  match patients using other patient identifiers
 		if (patients.isEmpty()) {
 			Map<String, SlotType1> slots = InfosetUtil.getSlotsFromRegistryObject(eo);
@@ -989,13 +988,16 @@ public class XDSbServiceImpl extends BaseOpenmrsService implements XDSbService {
 					PatientIdentifierType identifierType = getIdentifierType(identifier, Context.getPatientService());
 					patients = ps.getPatients(null, identifier.getIdentifier(), Collections.singletonList(identifierType),
 					    true);
+					if (patients.size() > 1) {
+						log.warn("Multiple patients found for this identifier: " + identifier.getIdentifier()
+						        + ", with id type: " + identifier.getAssigningAuthority().getAssigningAuthorityId());
+					}
 					
 					if (!patients.isEmpty()) {
 						break;
 					}
 				}
 			}
-			
 		}
 		
 		Patient retVal = null;
