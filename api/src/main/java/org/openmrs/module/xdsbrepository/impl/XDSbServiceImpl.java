@@ -974,7 +974,7 @@ public class XDSbServiceImpl extends BaseOpenmrsService implements XDSbService {
 			throw new PatientIdentifierException("Multiple patients found for this identifier: " + id.getIdentifier()
 			        + ", with id type: " + id.getAssigningAuthority().getAssigningAuthorityId());
 		}
-		// try to search matching patients with the otherpatient identifiers
+		// try to search and  match patients using other patient identifiers
 		if (patients.isEmpty()) {
 			Map<String, SlotType1> slots = InfosetUtil.getSlotsFromRegistryObject(eo);
 			SlotType1 patInfoSlot = slots.get(XDSConstants.SLOT_NAME_SOURCE_PATIENT_INFO);
