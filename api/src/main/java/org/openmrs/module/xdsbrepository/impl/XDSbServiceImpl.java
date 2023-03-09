@@ -970,12 +970,39 @@ public class XDSbServiceImpl extends BaseOpenmrsService implements XDSbService {
 		}
 
 		List<Patient> patients = ps.getPatients(null, id.getIdentifier(), Collections.singletonList(idType), true);
-
-		Patient retVal = null;
-
 		if (patients.size() > 1) {
-			throw new PatientIdentifierException("Multiple patients found for this identifier: " + id.getIdentifier() + ", with id type: " + id.getAssigningAuthority().getAssigningAuthorityId());
-		} else if (patients.size() < 1) {
+			log.warn("Multiple patients found for this identifier: " + id.getIdentifier() + ", with id type: "
+			        + id.getAssigningAuthority().getAssigningAuthorityId());
+		}
+		
+		// try to search and  match patients using other patient identifiers
+		if (patients.isEmpty()) {
+			Map<String, SlotType1> slots = InfosetUtil.getSlotsFromRegistryObject(eo);
+			SlotType1 patInfoSlot = slots.get(XDSConstants.SLOT_NAME_SOURCE_PATIENT_INFO);
+			List<String> valueList = patInfoSlot.getValueList().getValue();
+			for (String val : valueList) {
+				if (val.startsWith("PID-3|")) {
+					// patient ID - ignore source patient id in favour of enterprise patient id
+					val = val.replace("PID-3|", "");
+					Identifier identifier = parsePatientIdentifier(val);
+					PatientIdentifierType identifierType = getIdentifierType(identifier, Context.getPatientService());
+					patients = ps.getPatients(null, identifier.getIdentifier(), Collections.singletonList(identifierType),
+					    true);
+					if (patients.size() > 1) {
+						log.warn("Multiple patients found for this identifier: " + identifier.getIdentifier()
+						        + ", with id type: " + identifier.getAssigningAuthority().getAssigningAuthorityId());
+					}
+					
+					if (!patients.isEmpty()) {
+						break;
+					}
+				}
+			}
+		}
+		
+		Patient retVal = null;
+		
+		if (patients.isEmpty()) {
 			if (Context.getAdministrationService().getGlobalProperty(XDSbServiceConstants.XDS_REPOSITORY_AUTOCREATE_PATIENTS).equals("true")) {
 				retVal = ps.savePatient(this.createPatient(eo, id.getIdentifier(), idType));
 			} else {
